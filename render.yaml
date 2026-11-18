@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: ai-trader-pro
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PAPER_AUTO_WORKER
+        value: "1"
+      - key: PAPER_TICK_SECONDS
+        value: "15"
+      - key: APP_PASSWORD
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /var/data/paper.sqlite3
+    disk:
+      name: paper-data
+      mountPath: /var/data
+      sizeGB: 1
